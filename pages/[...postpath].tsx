@@ -4,8 +4,9 @@ import { GetServerSideProps } from 'next';
 import { GraphQLClient, gql } from 'graphql-request';
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-    const endpoint = process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT;
-const graphQLClient = new GraphQLClient(endpoint);
+    const endpoint = process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT || "";
+    if (!endpoint) throw new Error("NEXT_PUBLIC_GRAPHQL_ENDPOINT is not defined!");
+    const graphQLClient = new GraphQLClient(endpoint);
     const referringURL = ctx.req.headers?.referer || null;
     const pathArr = ctx.query.postpath as Array<string>;
     const path = pathArr.join('/');
